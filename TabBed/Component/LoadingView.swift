@@ -7,12 +7,38 @@
 
 import SwiftUI
 
-struct LoadingView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+struct LoadingView<T, ContentView: View>: View {
+    let isLoading: Bool
+    let model: T?
+    let content: (T) -> ContentView
+    
+    init(isLoading: Bool, model: T?, content: @escaping (T) -> ContentView) {
+        self.isLoading = isLoading
+        self.model = model
+        self.content = content
     }
+    
+    @ViewBuilder var body: some View {
+        if isLoading {
+            ProgressView()
+                .tint(AppColor.second)
+            
+        } else if let model {
+            content(model)
+        } else {
+            Text("error")
+        }
+    }
+    
 }
 
 #Preview {
-    LoadingView()
+    let model: ShortlyInfoMeetingModel? = nil
+    return ZStack {
+        AppColor.backgroud
+            .ignoresSafeArea()
+        LoadingView(isLoading: false, model: model) { model in
+            Text("test")
+        }
+    }
 }

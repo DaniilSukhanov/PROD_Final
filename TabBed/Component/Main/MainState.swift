@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct MainState: StateProtocol {
+    var shortlyInfoMeetingModels = [ShortlyInfoMeetingModel]()
+    var isLoadingMeetings = false
+}

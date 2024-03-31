@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+enum AddingMeetingAction: ActionProtocol {
+    case setPlace(String?)
+    case setName(String?)
+    case setDate(Date?)
+    case setTime(Date?)
+}

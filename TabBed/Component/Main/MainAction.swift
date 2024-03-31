@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+enum MainAction: ActionProtocol {
+    case getMeetings, setMeetings([ShortlyInfoMeetingModel])
+}

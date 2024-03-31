@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+enum RootAction: ActionProtocol {
+    case mainAction(MainAction)
+    case detailMeeting(DetailMeetingAction)
+    case addingMeetingAction(AddingMeetingAction)
+}

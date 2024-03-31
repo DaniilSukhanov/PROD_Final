@@ -6,3 +6,14 @@
 //
 
 import Foundation
+import SwiftUI
+
+extension View {
+    func addBorder<S>(_ content: S, cornerRadius: CGFloat, lineWidth: CGFloat = 1) -> some View where S : ShapeStyle {
+        let roundedRect = RoundedRectangle(cornerRadius: cornerRadius)
+        return clipShape(roundedRect)
+            .overlay {
+                roundedRect.strokeBorder(content, lineWidth: lineWidth)
+            }
+    }
+}

@@ -2,7 +2,7 @@
 //  Store.swift
 //  LifestyleHUB
 //
-//  Created by Даниил Суханов on 16.03.2024.
+//  Created by Даниил Суханов on 30.03.2024.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ import SwiftUI
 
 // Класс для хранение, чтения состояния, а также для безопасного изменение состояния на главном потоке
 @MainActor
-final class Store<AppState: Sendable, AppAction: Sendable>: ObservableObject {
+final class Store<AppState: StateProtocol, AppAction: ActionProtocol>: ObservableObject {
     @Published private(set) var state: AppState
     private let reducer: Reducer<AppState, AppAction>
     private let middlewares: [Middleware<AppAction>]

@@ -6,3 +6,10 @@
 //
 
 import Foundation
+import SwiftUI
+
+struct RootState: StateProtocol {
+    var main = MainState()
+    var detailMeeting = DetailMeetingState()
+    var addingMeeting = AddingMeetingState()
+}

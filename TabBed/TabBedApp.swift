@@ -8,10 +8,14 @@
 import SwiftUI
 
 @main
+@MainActor
 struct TabBedApp: App {
+    @StateObject var store = Store(state: RootState(), reducer: rootReducer, middlewares: [])
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
+                .environmentObject(store)
         }
     }
 }

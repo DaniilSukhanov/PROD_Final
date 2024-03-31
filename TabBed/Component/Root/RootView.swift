@@ -8,8 +8,21 @@
 import SwiftUI
 
 struct RootView: View {
+    @EnvironmentObject var store: Store<RootState, RootAction>
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            ZStack {
+                AppColor.backgroud
+                    .ignoresSafeArea()
+                VStack {
+                    ScrollView(.vertical, showsIndicators: false) {
+                        MainView()
+                    }
+                }
+            }
+        }
+        
     }
 }
 

@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct DetailMeetingState: StateProtocol {
+    var isLoading = false
+    var model: DetailMeetingModel?
+}

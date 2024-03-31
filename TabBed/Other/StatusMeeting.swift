@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+enum StatusMeeting {
+    case active, cancel, completed
+}

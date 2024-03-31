@@ -6,3 +6,14 @@
 //
 
 import Foundation
+import SwiftUI
+
+struct DetailMeetingModel {
+    let phoneNumber: String
+    let name: String
+    let description: String
+    let photo: Image
+    let date: String
+    let place: String
+    let status: StatusMeeting
+}

@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+enum DetailMeetingAction: ActionProtocol {
+    case get, set(DetailMeetingModel)
+}
