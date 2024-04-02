@@ -15,5 +15,5 @@ struct Token {
 
 
 struct StoreTokens {
-    static let tokenRemoteDatabase = Token(key: "Authorization", token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.DHnI9P0eM-2IV9c-_2rCDUX-RobJi0om_ygItKG7R34")
+    static let tokenRemoteDatabase = Token(key: "Authorization", token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyfQ.N7Df4KQjubvTJmDxi19RkVuF-i9F4alpf5phPGsMKhs")
 }

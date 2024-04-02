@@ -17,5 +17,6 @@ struct RootState: StateProtocol {
     var detailMeeting = DetailMeetingState()
     var addingMeeting = AddingMeetingState()
     var currentView: CurrentView = .main
+    var user = Participant(name: "Даниил Суханов", position: "Админ", phoneNumber: "+7(666)666-66-66")
 }
 

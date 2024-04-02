@@ -27,7 +27,8 @@ func mainMiddleware() -> Middleware<MainAction> {
                         participants: meeting.participants,
                         agent: .init(name: meeting.agent.name, phone: meeting.agent.phoneNumber, descrition: meeting.agent.description, photo: try await meeting.agent.photo.getImage(), id: meeting.agent.id),
                         status: meeting.isCanceled ? .cancel : .active,
-                        id: meeting.id
+                        id: meeting.id,
+                        type: meeting.type
                     )
                     models.append(model)
                 }

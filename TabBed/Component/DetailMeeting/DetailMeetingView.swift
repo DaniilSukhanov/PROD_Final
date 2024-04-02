@@ -47,6 +47,7 @@ struct DetailMeetingView: View {
 fileprivate struct ContentView: View {
     @EnvironmentObject var store: Store<RootState, RootAction>
     let model: DetailMeetingModel
+    @State var isAlert = false
     
     var body: some View {
         content
@@ -56,37 +57,64 @@ fileprivate struct ContentView: View {
     
     var content: some View {
         VStack(alignment: .leading, spacing: 10) {
+            DetailAgentView(model: model.agent)
+                .padding()
+                .background(AppColor.first)
+                .clipShape(RoundedRectangle(cornerRadius: 25))
             InfoView(model: model)
+                .padding()
+                .background(AppColor.first)
+                .clipShape(RoundedRectangle(cornerRadius: 25))
             ParticipantsView(model: model)
+                .padding()
+                .background(AppColor.first)
+                .clipShape(RoundedRectangle(cornerRadius: 25))
             DocumentsView(model: model)
-            AgentsView(model: model)
-            
-            Button {
-                store.dispatch(.detailMeeting(.delete(model.id)))
-                store.dispatch(.setCurrentView(.main))
-                store.dispatch(.mainAction(.getMeetings))
-            } label: {
-                RoundedRectangle(cornerRadius: 25)
-                    .fill(AppColor.cancled)
-                    .overlay {
-                        Text("Отменить")
-                            .font(AppFont.title2)
-                            .foregroundStyle(AppColor.invertBaseText)
-                    }.padding().frame(height: 80)
-            }
-            Button {
-                store.dispatch(.addingMeetingAction(.loadData(model)))
-                store.dispatch(.setCurrentView(.addingMeeting))
-            } label: {
-                RoundedRectangle(cornerRadius: 25)
-                    .fill(AppColor.secondBackgroud)
-                    .overlay {
-                        Text("Редактировать")
-                            .font(AppFont.title2)
-                            .foregroundStyle(AppColor.invertBaseText)
-                    }.padding().frame(height: 80)
-            }
+                .padding()
+                .background(AppColor.first)
+                .clipShape(RoundedRectangle(cornerRadius: 25))
+            HStack {
+                Button {
+                    store.dispatch(.addingMeetingAction(.loadData(model)))
+                    store.dispatch(.setCurrentView(.addingMeeting))
+                } label: {
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(AppColor.secondBackgroud)
+                        .overlay {
+                            Text("Изменить")
+                                .font(AppFont.title2)
+                                .foregroundStyle(AppColor.invertBaseText)
+                        }.padding().frame(height: 80)
+                }
+                Button {
+                    isAlert = true
+                } label: {
+                    AppImage.trash.resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .foregroundStyle(AppColor.cancled)
+                        .padding(.trailing, 8)
+                }
+            }.background(AppColor.first)
+                .clipShape(RoundedRectangle(cornerRadius: 25))
         }.padding()
+            .alert("Вы точно хотите удалить?", isPresented: $isAlert) {
+                Button("Отмена") {
+                    isAlert = false
+                }
+                Button("Изменить") {
+                    store.dispatch(.addingMeetingAction(.loadData(model)))
+                    store.dispatch(.setCurrentView(.addingMeeting))
+                }
+                Button("Удалить") {
+                    store.dispatch(.detailMeeting(.delete(model.id)))
+                    store.dispatch(.setCurrentView(.main))
+                    store.dispatch(.mainAction(.getMeetings))
+                }
+        } message: {
+            Text("Может все-таки изменить встречу?")
+        }
+
     }
     
 
@@ -96,18 +124,25 @@ fileprivate struct ParticipantsView: View {
     let model: DetailMeetingModel
     
     var body: some View {
+        
         VStack(alignment: .leading) {
-            Text("Участники встречи")
-                .font(AppFont.title)
-                .foregroundStyle(AppColor.baseText)
+            HStack {
+                Text("Участники встречи")
+                    .font(AppFont.title)
+                    .foregroundStyle(AppColor.baseText)
+                Spacer()
+            }
             VStack(alignment: .leading) {
                 ForEach(Array(model.participants.enumerated()), id: \.offset) { item in
-                    Text("\(item.offset+1). \(item.element.name)")
-                        .font(AppFont.body)
-                        .foregroundStyle(AppColor.baseText)
+                    HStack {
+                        Text("\(item.offset+1). \(item.element.name)")
+                            .font(AppFont.body)
+                            .foregroundStyle(AppColor.baseText)
+                        Spacer()
+                    }
                 }
             }
-        }
+        }.frame(maxWidth: .infinity)
     }
 }
 
@@ -126,20 +161,7 @@ fileprivate struct DocumentsView: View {
                         .font(AppFont.body)
                 }
             }
-        }
-    }
-}
-
-fileprivate struct AgentsView: View {
-    let model: DetailMeetingModel
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text("К вам приедет")
-                .font(AppFont.title)
-                .foregroundStyle(AppColor.baseText)
-            AgentView(agent: model.agent)
-        }
+        }.frame(maxWidth: .infinity)
     }
 }
 
@@ -147,26 +169,23 @@ fileprivate struct InfoView: View {
     let model: DetailMeetingModel
     
     var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text("Информация")
-                    .font(AppFont.title)
+        VStack(alignment: .leading) {
+            Text("Информация")
+                .font(AppFont.title)
+                .foregroundStyle(AppColor.baseText)
+            HStack(alignment: .top) {
+                AppImage.placePoint
                     .foregroundStyle(AppColor.baseText)
-                HStack {
-                    AppImage.placePoint
-                        .foregroundStyle(AppColor.baseText)
-                        .font(AppFont.body)
-                    Text(model.place).font(AppFont.body).foregroundStyle(AppColor.baseText)
-                }
-                HStack {
-                    AppImage.watch
-                        .foregroundStyle(AppColor.baseText)
-                        .font(AppFont.body)
-                    Text(model.date).font(AppFont.body).foregroundStyle(AppColor.baseText)
-                }
+                    .font(AppFont.body)
+                Text(model.place).font(AppFont.body).foregroundStyle(AppColor.baseText)
             }
-            Spacer()
-        }
+            HStack(alignment: .top) {
+                AppImage.watch
+                    .foregroundStyle(AppColor.baseText)
+                    .font(AppFont.body)
+                Text(model.date).font(AppFont.body).foregroundStyle(AppColor.baseText)
+            }
+        }.frame(maxWidth: .infinity)
     }
 }
 

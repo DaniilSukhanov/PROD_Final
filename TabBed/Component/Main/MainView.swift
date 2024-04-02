@@ -13,6 +13,8 @@ struct MainView: View {
         store.state.main
     }
     
+    let id = UUID()
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -21,12 +23,23 @@ struct MainView: View {
                         store.dispatch(.mainAction(.setError(nil)))
                     }.zIndex(0)
                 } else {
+                    if state.shortlyInfoMeetingModels.isEmpty {
+                        VStack {
+                            AppImage.lottiSleep
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 150)
+                                .colorMultiply(AppColor.firstColor)
+                            Text("Список заявок пуст")
+                                .font(AppFont.title3)
+                                .foregroundStyle(AppColor.baseText)
+                        }
+                    }
                     LoadingView(isLoading: state.isLoadingMeetings) {
+                        
                         ScrollView(.vertical, showsIndicators: false) {
                             LazyVStack {
                                 mettings
-                                    .transition(.opacity.animation(.easeInOut))
-                                    .animation(.easeInOut, value: state.shortlyInfoMeetingModels)
                             }.padding([.leading, .trailing], 16)
                             Spacer()
                                 .frame(height: geometry.size.height * 0.1 + 40)
@@ -34,7 +47,10 @@ struct MainView: View {
                             withAnimation {
                                 store.dispatch(.mainAction(.getMeetings))
                             }
-                        }
+                        }.id(id)
+                            .transition(.opacity.animation(.easeInOut(duration: 1.2)))
+                        
+                        
                     }.onAppear {
                         withAnimation {
                             store.dispatch(.mainAction(.getMeetings))
@@ -69,10 +85,6 @@ struct MainView: View {
     
     @ViewBuilder var mettings: some View {
         VStack(spacing: 10) {
-            if state.shortlyInfoMeetingModels.isEmpty {
-                Text("Нет задач")
-                    .foregroundStyle(AppColor.baseText)
-            }
             ForEach(state.shortlyInfoMeetingModels, id: \.id) { model in
                 Button {
                     store.dispatch(.detailMeeting(.get(model.id)))

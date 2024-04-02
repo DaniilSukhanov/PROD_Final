@@ -124,9 +124,6 @@ fileprivate struct SelectionPlaceView: View {
                 }
             VStack {
                 Spacer()
-                Text("Укажите место встречи")
-                    .font(AppFont.title)
-                    .foregroundStyle(AppColor.baseText)
                 TextField("Место", text: $selectedPlace)
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -164,7 +161,7 @@ fileprivate struct SelectionPlaceView: View {
             }.padding().onAppear {
                 selectedPlace = store.state.addingMeeting.place?.name ?? ""
             }
-        }
+        }.navigationTitle("Укажите место встречи").navigationBarTitleDisplayMode(.inline)
     }
 }
 
@@ -178,9 +175,6 @@ fileprivate struct SelectionTimeView: View {
                 .ignoresSafeArea()
             VStack {
                 Spacer()
-                Text("Укажите время")
-                    .font(AppFont.title)
-                    .foregroundStyle(AppColor.baseText)
                 DatePicker("", selection: $selectedDate, displayedComponents: .hourAndMinute)
                     .colorMultiply(AppColor.secondBackgroud)
                     .tint(AppColor.baseText)
@@ -205,7 +199,7 @@ fileprivate struct SelectionTimeView: View {
             .padding().onAppear {
                 selectedDate = store.state.addingMeeting.time ?? .now
             }
-        }
+        }.navigationTitle("Укажите время").navigationBarTitleDisplayMode(.inline)
     }
 }
 
@@ -217,7 +211,7 @@ fileprivate struct SelectionDateView: View {
         let startComponents = DateComponents(
             year: 2024,
             month: 4,
-            day: 4,
+            day: 3,
             hour: 00,
             minute: 00,
             second: 00
@@ -225,7 +219,7 @@ fileprivate struct SelectionDateView: View {
         let endComponents = DateComponents(
             year: 2024,
             month: 4,
-            day: 12,
+            day: 17,
             hour: 23,
             minute: 59,
             second: 59
@@ -235,10 +229,6 @@ fileprivate struct SelectionDateView: View {
     var body: some View {
         VStack {
             Spacer()
-            Text("Укажите дату")
-                .font(AppFont.title)
-                .foregroundStyle(AppColor.baseText)
-            
             DatePicker("", selection: $selectedDate, in: range, displayedComponents: .date)
                 .colorMultiply(AppColor.secondBackgroud)
                 .tint(AppColor.baseText)
@@ -260,7 +250,7 @@ fileprivate struct SelectionDateView: View {
         }
         .padding().onAppear {
             selectedDate = store.state.addingMeeting.date ?? .now
-        }
+        }.navigationTitle("Укажите дату").navigationBarTitleDisplayMode(.inline)
     }
 }
 
@@ -277,17 +267,47 @@ fileprivate struct SelectionParticipantView: View {
     @State var amountParticipants = 1
     @State private var cache = [Int: Conteiner]()
     @FocusState var focus: Fosus?
+    
+    func delete(_ index: Int) {
+        cache.removeValue(forKey: index)
+        let values = cache.sorted(by: { $0.key < $1.key }).map { $0.value }
+        cache.removeAll()
+        for item in values.enumerated() {
+            cache[item.offset] = item.element
+        }
+        amountParticipants -= 1
+    }
+    
     var body: some View {
         VStack {
             EmptyView()
                 .frame(height: 80)
-            ScrollView {
-                Text("Укажите участников встречи")
-                    .font(AppFont.title)
-                    .foregroundStyle(AppColor.baseText)
-                VStack {
+            ScrollView(.vertical, showsIndicators: false) {
+                Spacer()
+                    .frame(height: 30)
+                VStack(spacing: 50) {
                     ForEach(0..<amountParticipants, id: \.self) { index in
-                        VStack {
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text("Участник \(index+1)")
+                                    .foregroundStyle(AppColor.baseText)
+                                    .font(AppFont.title2)
+                                    .multilineTextAlignment(.center)
+                                Spacer()
+                                if index != 0 {
+                                    Button {
+                                        delete(index)
+                                    } label: {
+                                        AppImage.xmark
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 20, height: 20)
+                                            .foregroundStyle(AppColor.baseText)
+                                    }
+                                }
+
+                            }
+                            Divider()
                             TextField("Имя", text: .init(get: { cache[index]?.name ?? "" }, set: {
                                 cache[index] = Conteiner(name: $0, phone: cache[index]?.phone ?? "")
                             }))
@@ -311,8 +331,8 @@ fileprivate struct SelectionParticipantView: View {
                     AppImage.plus
                         .foregroundStyle(AppColor.baseText)
                         .font(AppFont.largeTitle)
-                }
-            }
+                }.padding([.top, .bottom], 16)
+            }.animation(.easeIn, value: cache.count)
             Spacer()
             Button {
                 var result = [Participant]()
@@ -334,32 +354,45 @@ fileprivate struct SelectionParticipantView: View {
             .onTapGesture {
                 focus = nil
             }.onAppear {
-                for item in store.state.addingMeeting.participants.enumerated() {
-                    cache[item.offset] = Conteiner(name: item.element.name, phone: item.element.phoneNumber)
+                if store.state.addingMeeting.participants.isEmpty {
+                    cache[0] = Conteiner(name: store.state.user.name, phone: store.state.user.phoneNumber)
+                } else {
+                    for item in store.state.addingMeeting.participants.enumerated() {
+                        cache[item.offset] = Conteiner(name: item.element.name, phone: item.element.phoneNumber)
+                    }
                 }
-            }
+            }.navigationTitle("Укажите участников встречи").navigationBarTitleDisplayMode(.inline)
     }
 }
 
 fileprivate struct SelectedAgent: View {
     @EnvironmentObject var store: Store<RootState, RootAction>
     @State var selectedAgent: AgentModel?
-    
     var state: AddingMeetingState {
         store.state.addingMeeting
     }
+    @State var isAlert = false
     
     var body: some View {
         VStack {
             LoadingView(isLoading: state.isLoadingAgents, model: state.agents) { agents in
                 ScrollView {
-                    ForEach(agents, id: \.id) { agent in
-                        AgentView(agent: agent)
-                            .addBorder(selectedAgent?.id == agent.id ? AppColor.first : AppColor.second, cornerRadius: 25, lineWidth: 3)
-                            .onTapGesture {
-                                selectedAgent = agent
-                            }
+      
+                        ForEach(agents, id: \.id) { agent in
+                            AgentView(agent: agent, isRectPhoto: true)
+                                .addBorder(selectedAgent?.id == agent.id ? .gray : AppColor.firstColor, cornerRadius: 25, lineWidth: 3)
+                                .onTapGesture {
+                                    selectedAgent = agent
+                                }
+                        }
+                    
+                }.onAppear {
+                    if agents.isEmpty {
+                        isAlert = true
+                    } else if selectedAgent == nil {
+                        selectedAgent = agents.first
                     }
+                    
                 }
             }
             Spacer()
@@ -372,14 +405,24 @@ fileprivate struct SelectedAgent: View {
                     .fill(AppColor.secondBackgroud)
                     .addBorder(AppColor.secondBackgroud, cornerRadius: 25, lineWidth: 3)
                     .overlay {
-                        Text("Добавить")
+                        Text("Дальше")
                             .font(AppFont.title)
                             .foregroundStyle(AppColor.invertBaseText)
                     }
-            }.frame(maxHeight: 80)
+            }.frame(maxHeight: 80).disabled(selectedAgent == nil)
         }.onAppear {
             selectedAgent = store.state.addingMeeting.selectedAgent
-        }
+        }.alert("Нет агентов.", isPresented: $isAlert) {
+            Button("Изменить время и дату") {
+                store.dispatch(.addingMeetingAction(.setCurrentViewe(.date)))
+            }
+            Button("На главную") {
+                store.dispatch(.addingMeetingAction(.resetData))
+                store.dispatch(.setCurrentView(.main))
+                store.dispatch(.addingMeetingAction(.setCurrentViewe(.participants)))
+            }
+        }.padding().navigationTitle("Выберите агента").navigationBarTitleDisplayMode(.inline)
+
     }
 }
 
@@ -398,16 +441,19 @@ fileprivate struct ComplitedView: View {
                 AppImage.lottiHeart.resizable()
                     .scaledToFit()
                     .frame(height: 200)
+                    .animation(.easeInOut)
                 Text("Ваша заявка принята")
                     .font(AppFont.largeTitle)
                     .foregroundStyle(AppColor.baseText)
+                    .animation(.easeInOut)
                 LoadingView(isLoading: state.isLoadingProducts, model: state.products) { products in
                     VStack {
                         ForEach(products, id: \.id) { product in
                             ProductView(model: product)
+                                
                         }
                     }
-                }
+                }.transition(.opacity.animation(.easeInOut(duration: 1)))
                 Spacer()
                 Button {
                     if state.isEdit {

@@ -9,23 +9,38 @@ import SwiftUI
 
 struct AgentView: View {
     let agent: AgentModel
+    let isRectPhoto: Bool
+    
+    init(agent: AgentModel, isRectPhoto: Bool = false) {
+        self.agent = agent
+        self.isRectPhoto = isRectPhoto
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
+                
                 agent.photo
                     .resizable()
                     .frame(maxWidth: 70, maxHeight: 70)
                     .addBorder(AppColor.secondeBoard, cornerRadius: 35, lineWidth: 3)
+                
                 VStack(alignment: .leading) {
                     Text(agent.name)
                         .font(AppFont.title3)
                         .foregroundStyle(AppColor.baseText)
                         .lineLimit(1)
-                    Text(agent.phone)
-                        .font(AppFont.body)
-                        .foregroundStyle(AppColor.baseText)
-                        .lineLimit(1)
+                    if isRectPhoto {
+                        Text(agent.descrition)
+                            .font(AppFont.body)
+                            .foregroundStyle(AppColor.baseText)
+                            .lineLimit(1)
+                    } else {
+                        Text(agent.phone)
+                            .font(AppFont.body)
+                            .foregroundStyle(AppColor.baseText)
+                            .lineLimit(1)
+                    }
                 }
                 Spacer()
             }

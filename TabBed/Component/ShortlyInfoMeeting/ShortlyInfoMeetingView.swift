@@ -12,16 +12,16 @@ struct ShortlyInfoMeetingView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Заявка на ООО")
+            Text("Заявка на \(model.type)")
                 .foregroundStyle(AppColor.baseText)
                 .font(AppFont.title2.bold())
-            HStack {
+            HStack(alignment: .top) {
                 AppImage.placePoint
                     .foregroundStyle(AppColor.baseText)
                     .font(AppFont.body)
                 Text(model.place).font(AppFont.body).foregroundStyle(AppColor.baseText)
             }
-            HStack {
+            HStack(alignment: .top) {
                 AppImage.watch
                     .foregroundStyle(AppColor.baseText)
                     .font(AppFont.body)
@@ -48,6 +48,6 @@ struct ShortlyInfoMeetingView: View {
    ZStack {
         AppColor.backgroud
             .ignoresSafeArea()
-       ShortlyInfoMeetingView(model: .init(date: "23 ноября 23:00", place: "3212321", participants: [], agent: .init(name: "Петя Пепеткин", phone: "+7 (666)666-66-66", descrition: "Я крут!", photo: Image("Agent"), id: 1), status: .active, id: 123))
+       ShortlyInfoMeetingView(model: .init(date: "23 ноября 23:00", place: "3212321", participants: [], agent: .init(name: "Петя Пепеткин", phone: "+7 (666)666-66-66", descrition: "Я крут!", photo: Image("Agent"), id: 1), status: .active, id: 123, type: "000"))
     }
 }

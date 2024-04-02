@@ -17,4 +17,7 @@ struct AppImage {
     static let plus = Image(systemName: "plus")
     static let xmark = Image(systemName: "xmark")
     static let lottiHeart = Image("LottiHeart")
+    static let trash = Image(systemName: "trash")
+    static let lottiSleep = Image("LottiSleep")
+    static let minus = Image(systemName: "delete.left")
 }

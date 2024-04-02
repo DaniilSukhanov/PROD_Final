@@ -19,4 +19,5 @@ struct ShortlyInfoMeetingModel: Equatable {
     let agent: AgentModel
     let status: StatusMeeting
     let id: Int
+    let `type`: String
 }

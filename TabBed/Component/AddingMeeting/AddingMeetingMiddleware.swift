@@ -18,7 +18,7 @@ func addingMeetingMiddleware() -> Middleware<AddingMeetingAction> {
                 guard let lon = Double(model.lon), let lat = Double(model.lat) else {
                     return .setPlace(nil)
                 }
-                return .setPlace(.init(name: model.displayName, longitude: lon, latitude: lat))
+                return .setPlace(.init(name: model.name, longitude: lon, latitude: lat))
             } catch {
                 print("correctAddress", String(describing: error))
                 return .setError("Некорректный адрес.")

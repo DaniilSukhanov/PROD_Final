@@ -30,10 +30,9 @@ struct LoadingView<T: Any, ContentView: View>: View {
     @ViewBuilder var body: some View {
         if isLoading {
             ZStack {
-                AppColor.backgroud.ignoresSafeArea()
                 ProgressView()
                     .foregroundStyle(AppColor.second)
-            }.frame(maxWidth: .infinity, maxHeight: 100)
+            }.frame(maxWidth: .infinity, maxHeight: .infinity)
             .ignoresSafeArea()
         } else if let model, let content {
             content(model)

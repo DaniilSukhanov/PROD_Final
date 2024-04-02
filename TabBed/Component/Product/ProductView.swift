@@ -10,46 +10,47 @@ import SwiftUI
 struct ProductView: View {
     @EnvironmentObject var store: Store<RootState, RootAction>
     let model: ProductModel
-    @State var isShow = false
+    @State var isDetail = false
     
     var body: some View {
         
-        VStack {
-            HStack {
-                model.image
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 60)
-                VStack(alignment: .leading) {
-                    Link(destination: model.url) {
-                        Text(model.name)
-                            .font(AppFont.title2.bold())
-                            .foregroundStyle(AppColor.baseText)
-                    }.environment(\.openURL, OpenURLAction { url in
-                        store.dispatch(.clickBanner(model.id))
-                        return .systemAction
-                    })
-                    Text(isShow ? "Скрыть..." : "Подробнее...")
-                        .font(AppFont.title3)
-                        .foregroundStyle(AppColor.baseText)
-                        .onTapGesture {
-                            withAnimation {
-                                isShow.toggle()
-                            }
-                        }
-                }
-            }
-            if isShow {
-                Divider()
+        HStack {
+            model.image
+                .resizable()
+                .scaledToFit()
+                .frame(height: 60)
+            VStack(alignment: .leading) {
+                Text(model.name)
+                    .font(AppFont.title2.bold())
+                    .foregroundStyle(AppColor.baseText)
+                    .multilineTextAlignment(.leading)
                 Text(model.description)
                     .font(AppFont.body)
                     .foregroundStyle(AppColor.baseText)
-                    .animation(.easeIn, value: isShow)
+                    .lineLimit(isDetail ? 666 : 1)
+                    .multilineTextAlignment(.leading)
+                Link("Подробнее...", destination: model.url)
+                    .environment(\.openURL, OpenURLAction { url in
+                        store.dispatch(.clickBanner(model.id))
+                        return .systemAction
+                    })
+                
             }
         }.padding()
             .background(AppColor.bannerbackgroud)
             .clipShape(RoundedRectangle(cornerRadius: 25))
-            .buttonStyle(PlainButtonStyle())
+            .overlay(alignment: .topTrailing) {
+                Button {
+                    isDetail.toggle()
+                } label: {
+                    Image(systemName: isDetail ? "chevron.down" : "chevron.up")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .foregroundStyle(AppColor.baseText)
+                }.offset(x: -8, y: 8)
+            }.animation(.easeInOut, value: isDetail)
+            .frame(maxWidth: .infinity)
             
     }
 }

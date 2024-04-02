@@ -71,6 +71,7 @@
 		E4A650D02BBC391300630718 /* ProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A650CF2BBC391300630718 /* ProductView.swift */; };
 		E4A650D22BBC391C00630718 /* ProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A650D12BBC391C00630718 /* ProductModel.swift */; };
 		E4A650D42BBC7F9200630718 /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A650D32BBC7F9200630718 /* Color+hex.swift */; };
+		E4A650D62BBCA4DE00630718 /* DetailAgentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A650D52BBCA4DE00630718 /* DetailAgentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -159,6 +160,7 @@
 		E4A650CF2BBC391300630718 /* ProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductView.swift; sourceTree = "<group>"; };
 		E4A650D12BBC391C00630718 /* ProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModel.swift; sourceTree = "<group>"; };
 		E4A650D32BBC7F9200630718 /* Color+hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+hex.swift"; sourceTree = "<group>"; };
+		E4A650D52BBCA4DE00630718 /* DetailAgentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailAgentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +214,7 @@
 			children = (
 				E4A650B32BBA161300630718 /* AgentModel.swift */,
 				E41C2C1D2BB990070092DCB5 /* AgentView.swift */,
+				E4A650D52BBCA4DE00630718 /* DetailAgentView.swift */,
 			);
 			path = Agent;
 			sourceTree = "<group>";
@@ -563,6 +566,7 @@
 				E48145462BB8C3D700A1ABF4 /* DetailMeetingReducer.swift in Sources */,
 				E481450D2BB8994500A1ABF4 /* Store.swift in Sources */,
 				E4A650B02BBA0D7700630718 /* RemoteDatabaseModels.swift in Sources */,
+				E4A650D62BBCA4DE00630718 /* DetailAgentView.swift in Sources */,
 				E4A6509F2BB9EE5600630718 /* NetworkingURL.swift in Sources */,
 				E4A650C52BBAF1EF00630718 /* GeoPositionManager.swift in Sources */,
 				E48145172BB89A4400A1ABF4 /* ActionProtocol.swift in Sources */,
