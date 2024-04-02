@@ -95,8 +95,7 @@ fileprivate struct ContentView: View {
                         .foregroundStyle(AppColor.cancled)
                         .padding(.trailing, 8)
                 }
-            }.background(AppColor.first)
-                .clipShape(RoundedRectangle(cornerRadius: 25))
+            }
         }.padding()
             .alert("Вы точно хотите удалить?", isPresented: $isAlert) {
                 Button("Отмена") {
@@ -142,7 +141,7 @@ fileprivate struct ParticipantsView: View {
                     }
                 }
             }
-        }.frame(maxWidth: .infinity)
+        }
     }
 }
 
@@ -150,18 +149,21 @@ fileprivate struct DocumentsView: View {
     let model: DetailMeetingModel
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("Документы")
-                .font(AppFont.title)
-                .foregroundStyle(AppColor.baseText)
+        HStack {
             VStack(alignment: .leading) {
-                ForEach(0..<model.documents.count, id: \.self) { index in
-                    Text("\(index+1). \(model.documents[index])")
-                        .foregroundStyle(AppColor.baseText)
-                        .font(AppFont.body)
+                Text("Документы")
+                    .font(AppFont.title)
+                    .foregroundStyle(AppColor.baseText)
+                VStack(alignment: .leading) {
+                    ForEach(0..<model.documents.count, id: \.self) { index in
+                        Text("\(index+1). \(model.documents[index])")
+                            .foregroundStyle(AppColor.baseText)
+                            .font(AppFont.body)
+                    }
                 }
             }
-        }.frame(maxWidth: .infinity)
+            Spacer()
+        }
     }
 }
 
@@ -169,23 +171,26 @@ fileprivate struct InfoView: View {
     let model: DetailMeetingModel
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("Информация")
-                .font(AppFont.title)
-                .foregroundStyle(AppColor.baseText)
-            HStack(alignment: .top) {
-                AppImage.placePoint
+        HStack {
+            VStack(alignment: .leading) {
+                Text("Информация")
+                    .font(AppFont.title)
                     .foregroundStyle(AppColor.baseText)
-                    .font(AppFont.body)
-                Text(model.place).font(AppFont.body).foregroundStyle(AppColor.baseText)
+                HStack(alignment: .top) {
+                    AppImage.placePoint
+                        .foregroundStyle(AppColor.baseText)
+                        .font(AppFont.body)
+                    Text(model.place).font(AppFont.body).foregroundStyle(AppColor.baseText)
+                }
+                HStack(alignment: .top) {
+                    AppImage.watch
+                        .foregroundStyle(AppColor.baseText)
+                        .font(AppFont.body)
+                    Text(model.date).font(AppFont.body).foregroundStyle(AppColor.baseText)
+                }
             }
-            HStack(alignment: .top) {
-                AppImage.watch
-                    .foregroundStyle(AppColor.baseText)
-                    .font(AppFont.body)
-                Text(model.date).font(AppFont.body).foregroundStyle(AppColor.baseText)
-            }
-        }.frame(maxWidth: .infinity)
+            Spacer()
+        }
     }
 }
 
