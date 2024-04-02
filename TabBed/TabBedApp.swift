@@ -10,12 +10,13 @@ import SwiftUI
 @main
 @MainActor
 struct TabBedApp: App {
-    @StateObject var store = Store(state: RootState(), reducer: rootReducer, middlewares: [])
+    @StateObject var store = Store(state: RootState(), reducer: rootReducer, middlewares: [rootMiddleware()])
     
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environmentObject(store)
+                .environment(\.colorScheme, .light)
         }
     }
 }

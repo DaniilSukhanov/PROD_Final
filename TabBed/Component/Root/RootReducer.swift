@@ -15,5 +15,9 @@ import Foundation
         mainReducer(&state.main, action)
     case .addingMeetingAction(let action):
         addingMeetingReducer(&state.addingMeeting, action)
+    case .setCurrentView(let value):
+        state.currentView = value
+    default:
+        break
     }
 }

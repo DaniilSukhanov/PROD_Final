@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct NetworkingURL {
+    static let cheakerAdderessService = URL(string: "https://nominatim.openstreetmap.org")
+    static let remoteDatabaseService = URL(string: "http://158.160.117.217:8000")
+}

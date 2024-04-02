@@ -8,7 +8,7 @@
 @preconcurrency import Foundation
 
 protocol CheakerAdderessServiceProtocol: NetworkingProtocol  {
-    func checkCorrectAddress(_ address: String) async throws
+    func checkCorrectAddress(_ address: String) async throws -> ResponcePlacesCheackerAddressElement
 }
 
 actor CheakerAdderessService: CheakerAdderessServiceProtocol {
@@ -17,7 +17,7 @@ actor CheakerAdderessService: CheakerAdderessServiceProtocol {
         self.baseURL = baseURL
     }
     
-    func checkCorrectAddress(_ address: String) async throws {
+    func checkCorrectAddress(_ address: String) async throws -> ResponcePlacesCheackerAddressElement {
         guard let baseURL else {
             throw NetworkingError.badURL
         }
@@ -26,14 +26,15 @@ actor CheakerAdderessService: CheakerAdderessServiceProtocol {
             "format": "json",
             "q": address
         ]
-        let request = try URLRequest(url: baseURL.addMethod(urlMethod: "search", parameters: parameters))
+        let request = try URLRequest(url: baseURL.addMethod(urlMethod: "/search", parameters: parameters))
         let (data, response) = try await URLSession(configuration: .default).data(for: request)
         if (response as? HTTPURLResponse)?.statusCode == 500 {
             throw NetworkingError.notInternet
         }
-        if data.isEmpty {
-            throw NetworkingError.failedData
+        let metaModel = try JSONDecoder().decode(ResponcePlacesCheackerAddress.self, from: data)
+        guard let model = metaModel.first else {
+            throw NetworkingError.failedData(-2)
         }
-        
+        return model
     }
 }

@@ -8,5 +8,5 @@
 import Foundation
 
 enum DetailMeetingAction: ActionProtocol {
-    case get, set(DetailMeetingModel)
+    case get(Int), set(DetailMeetingModel?), delete(Int)
 }

@@ -6,3 +6,33 @@
 //
 
 import Foundation
+
+
+
+// MARK: - DetailInfoMeeting
+struct DetailInfoMeeting: Codable, Sendable {
+    let date: String
+    let place: Place
+    let participants: [Participant]
+    let id: Int
+    let documents: Documents
+    let agent: Agent
+    let isCanceled: Bool
+    let type: String
+    
+    enum CodingKeys: String, CodingKey {
+        case date, place, participants, id, documents, agent
+        case isCanceled = "is_canceled"
+        case type
+    }
+}
+
+// MARK: - Documents
+struct Documents: Codable, Sendable {
+    let id: Int
+    let documents: [String]
+}
+
+
+typealias DetailInfoMeetings = [DetailInfoMeeting]
+

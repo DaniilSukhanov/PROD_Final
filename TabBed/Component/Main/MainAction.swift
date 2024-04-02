@@ -9,4 +9,6 @@ import Foundation
 
 enum MainAction: ActionProtocol {
     case getMeetings, setMeetings([ShortlyInfoMeetingModel])
+    case activeFirstLink(Bool)
+    case setError(String?)
 }

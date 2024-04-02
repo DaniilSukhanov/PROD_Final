@@ -9,12 +9,14 @@ import Foundation
 
 @Sendable func detailMeetingReducer(_ state: inout DetailMeetingState, _ action: DetailMeetingAction) {
     switch action {
-    case .get:
+    case .get(_):
         state.isLoading = true
         state.model = nil
     case .set(let model):
         state.isLoading = false
         state.model = model
+    default:
+        break
     }
 }
 

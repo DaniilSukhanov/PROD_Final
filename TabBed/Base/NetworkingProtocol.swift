@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+enum NetworkingError: Error {
+    case badURL
+    case notInternet
+    case failedData(Int)
+}
+
+protocol NetworkingProtocol {
+    init(baseURL: URL?)
+}
+

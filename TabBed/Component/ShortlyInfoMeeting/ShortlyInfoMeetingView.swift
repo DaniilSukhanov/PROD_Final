@@ -12,26 +12,42 @@ struct ShortlyInfoMeetingView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            model.status.view
+            Text("Заявка на ООО")
+                .foregroundStyle(AppColor.baseText)
+                .font(AppFont.title2.bold())
             HStack {
-                Text(model.nameSpecialist)
+                AppImage.placePoint
+                    .foregroundStyle(AppColor.baseText)
                     .font(AppFont.body)
+                Text(model.place).font(AppFont.body).foregroundStyle(AppColor.baseText)
+            }
+            HStack {
+                AppImage.watch
+                    .foregroundStyle(AppColor.baseText)
+                    .font(AppFont.body)
+                Text(model.date).font(AppFont.body).foregroundStyle(AppColor.baseText)
+            }
+            Text("Количество учатников - \(model.participants.count)")
+                .font(AppFont.body)
+                .foregroundStyle(AppColor.baseText)
+            HStack {
+                Text("Представитель")
+                    .font(AppFont.title2.bold())
                     .foregroundStyle(AppColor.baseText)
                 Spacer()
             }
-            Text(model.date)
-                .font(AppFont.body)
-                .foregroundStyle(AppColor.baseText)
+            Divider()
+            AgentView(agent: model.agent)
         }.padding()
             .background(AppColor.first)
-            .addBorder(AppColor.second, cornerRadius: 25, lineWidth: 3)
+            .addBorder(AppColor.first, cornerRadius: 25, lineWidth: 3)
     }
 }
 
 #Preview {
-    ZStack {
+   ZStack {
         AppColor.backgroud
             .ignoresSafeArea()
-        ShortlyInfoMeetingView(model: .init(date: "23 ноября 23:00", nameSpecialist: "Петя Пепеткин", status: .active, id: 123))
+       ShortlyInfoMeetingView(model: .init(date: "23 ноября 23:00", place: "3212321", participants: [], agent: .init(name: "Петя Пепеткин", phone: "+7 (666)666-66-66", descrition: "Я крут!", photo: Image("Agent"), id: 1), status: .active, id: 123))
     }
 }

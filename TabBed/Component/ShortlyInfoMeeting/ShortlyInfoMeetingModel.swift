@@ -8,9 +8,15 @@
 import Foundation
 import SwiftUI
 
-struct ShortlyInfoMeetingModel {
+struct ShortlyInfoMeetingModel: Equatable {
+    static func == (lhs: ShortlyInfoMeetingModel, rhs: ShortlyInfoMeetingModel) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     let date: String
-    let nameSpecialist: String
+    let place: String
+    let participants: [Participant]
+    let agent: AgentModel
     let status: StatusMeeting
     let id: Int
 }

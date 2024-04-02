@@ -8,11 +8,37 @@
 import SwiftUI
 
 struct ErrorView: View {
+    let text: String
+    let action: () -> ()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            AppColor.backgroud
+                .ignoresSafeArea()
+            VStack {
+                AppImage.lottiError
+                    .resizable()
+                    .scaledToFit()
+                    .colorMultiply(AppColor.invertBaseText)
+                Text(text)
+                    .font(AppFont.largeTitle)
+                    .foregroundStyle(AppColor.invertBaseText)
+                    .multilineTextAlignment(.center)
+                AppImage.xmark
+                    .foregroundStyle(AppColor.invertBaseText)
+                    .font(AppFont.title2)
+                    .frame(width: 80, height: 80)
+                    .onTapGesture {
+                        action()
+                    }
+            }.background(AppColor.secondBackgroud)
+                .clipShape(RoundedRectangle(cornerRadius: 25))
+        }
     }
 }
 
 #Preview {
-    ErrorView()
+    ErrorView(text: "qwertyuioiuytre") {
+        
+    }
 }

@@ -11,4 +11,6 @@ enum RootAction: ActionProtocol {
     case mainAction(MainAction)
     case detailMeeting(DetailMeetingAction)
     case addingMeetingAction(AddingMeetingAction)
+    case setCurrentView(CurrentView)
+    case clickBanner(Int)
 }

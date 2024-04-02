@@ -15,10 +15,11 @@ extension URL {
     func addMethod(urlMethod: String, parameters: [String: String]? = nil) throws -> URL {
         var resultUrl = self.appendingPathComponent(urlMethod)
         if let parameters {
-            let stringParameters = "?" + parameters.map { (key: String, value: String) in
-                "\(key)=\(value)"
-            }.joined(separator: "&")
-            guard let url = URL(string: resultUrl.absoluteString + stringParameters) else {
+            var components = URLComponents(url: resultUrl, resolvingAgainstBaseURL: true)
+            components?.queryItems = parameters.compactMap {
+                URLQueryItem(name: $0.key, value: $0.value)
+            }
+            guard let url = components?.url else {
                 throw URLError.fieldAddMethod
             }
             resultUrl = url

@@ -15,5 +15,10 @@ import Foundation
     case .setMeetings(let models):
         state.isLoadingMeetings = false
         state.shortlyInfoMeetingModels = models
+    case .activeFirstLink(let value):
+        state.isActiveFirstLink = value
+    case .setError(let error):
+        state.error = error
+        state.isLoadingMeetings = false
     }
 }
